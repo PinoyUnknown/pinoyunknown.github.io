@@ -427,4 +427,42 @@ function processCipher(action) {
   consoleBox.scrollTop = consoleBox.scrollHeight;
 }
 </script>
+
+<script>
+        let audioCtx = null;
+
+function playGlitchSynth() {
+  // Initialize the audio context safely following browser security rules
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  
+  const now = audioCtx.currentTime;
+  
+  // Create your audio nodes
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  
+  // Choose wave type: 'square' or 'sawtooth' work best for retro cyber glitches
+  oscillator.type = Math.random() > 0.5 ? 'square' : 'sawtooth';
+  
+  // Rapidly shift frequencies to simulate a digital glitch distortion
+  oscillator.frequency.setValueAtTime(Math.random() * 600 + 200, now);
+  oscillator.frequency.setValueAtTime(Math.random() * 1200 + 400, now + 0.04);
+  oscillator.frequency.setValueAtTime(Math.random() * 300 + 100, now + 0.08);
+  
+  // Create a quick volume drop-off fade out curve
+  gainNode.gain.setValueAtTime(0.12, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+  
+  // Route nodes to speakers
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  
+  // Start and instantly kill the sound block
+  oscillator.start(now);
+  oscillator.stop(now + 0.16);
+}
+
+</script>
         
