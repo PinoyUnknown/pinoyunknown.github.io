@@ -280,6 +280,12 @@
 
 <script>
 // ============================================================================
+// CORE ELEMENT INITIALIZATION (Add this at the very top of your script)
+// ============================================================================
+const canvas = document.getElementById('matrixCanvas'); // <-- THIS FIXES THE CRASH
+const ctx = canvas.getContext('2d');
+
+// ============================================================================
 // 1. AUDIO UTILITY ENGINE (Synthetic Synth Web Audio API)
 // ============================================================================
 let audioCtx = null;
