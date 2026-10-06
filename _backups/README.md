@@ -13,6 +13,7 @@
 | **v2.0.0** | `_backups/v2.0.0/index_v2.0.0.html` | Working multi-column layout with system metrics and preliminary crypto encoders. |
 | **v2.1.0** | `_backups/v2.1.0/index_v2.1.0.html` | Stabilized JavaScript syntax, script tag repair, unmasked WebGL GPU telemetry, and 12-tool cipher suite. |
 | **v3.0.0** | `_backups/v3.0.0/index_v3.0.0.html` | Production release featuring offline Archangel AI (`archangel-llm.js`), 26-tool Cryptographic Utility Suite, and Hugging Face 2026 Model Matrix. |
+| **v4.0.0** | `_backups/v4.0.0/index_v4.0.0.html` | ASK AI cognitive brain upgrade (36 ontologies), zero-plaintext Data Bank cryptographic vault, and session lockout. |
 
 ---
 
