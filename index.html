@@ -280,13 +280,28 @@
 
 <script>
 // ============================================================================
-// CORE ELEMENT INITIALIZATION (Add this at the very top of your script)
+// 1. CORE CANVAS & ELEMENT INITIALIZATION
 // ============================================================================
-const canvas = document.getElementById('matrixCanvas'); // <-- THIS FIXES THE CRASH
+const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
+const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
+const charArray = matrixChars.split("");
+const fontSize = 14;
+let rainDrops = [];
+
+function resizeCanvas() {
+  if (!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let columns = canvas.width / fontSize;
+  rainDrops = Array(Math.floor(columns)).fill(1);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // Initialize drops array
+
 // ============================================================================
-// 1. AUDIO UTILITY ENGINE (Synthetic Synth Web Audio API)
+// 2. AUDIO UTILITY ENGINE (Synthetic Synth Web Audio API)
 // ============================================================================
 let audioCtx = null;
 
@@ -340,25 +355,10 @@ function playBeep(freq, duration) {
 }
 
 // ============================================================================
-// 2. CANVAS MATRIX BACKGROUND ANIMATION
+// 3. ANIMATION RENDERING LOOP
 // ============================================================================
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
-const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
-const charArray = matrixChars.split("");
-const fontSize = 14;
-let rainDrops = [];
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  let columns = canvas.width / fontSize;
-  rainDrops = Array(Math.floor(columns)).fill(1);
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
 function drawMatrix() {
+  if (!ctx || !canvas) return;
   ctx.fillStyle = 'rgba(3, 3, 7, 0.05)'; 
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#ff007f'; 
@@ -377,10 +377,13 @@ function drawMatrix() {
 setInterval(drawMatrix, 33);
 
 // ============================================================================
-// 3. SYSTEM METRICS & TELEMETRY LOOKUPS
+// 4. SYSTEM METRICS & TELEMETRY LOOKUPS
 // ============================================================================
 function updateClock() {
-  document.getElementById('live-clock').innerText = `SYS_TIME: [${new Date().toTimeString().split(' ')[0]}]`;
+  const clockEl = document.getElementById('live-clock');
+  if (clockEl) {
+    clockEl.innerText = `SYS_TIME: [${new Date().toTimeString().split(' ')}]`;
+  }
 }
 setInterval(updateClock, 1000); 
 updateClock();
@@ -389,19 +392,25 @@ async function captureTelemetry() {
   try {
     const response = await fetch('https://ipapi.co');
     const data = await response.json();
-    document.getElementById('user-ip').innerText = data.ip || "Unknown Pointer";
-    document.getElementById('user-geo').innerText = `${data.city || 'Unknown City'}, ${data.country_name || 'Global Link'}`;
+    const ipEl = document.getElementById('user-ip');
+    const geoEl = document.getElementById('user-geo');
+    if (ipEl) ipEl.innerText = data.ip || "Unknown Pointer";
+    if (geoEl) geoEl.innerText = `${data.city || 'Unknown City'}, ${data.country_name || 'Global Link'}`;
   } catch (err) {
-    document.getElementById('user-ip').innerText = "127.0.0.1 (Loopback)";
-    document.getElementById('user-geo').innerText = "Local Override Gateway";
+    const ipEl = document.getElementById('user-ip');
+    const geoEl = document.getElementById('user-geo');
+    if (ipEl) ipEl.innerText = "127.0.0.1 (Loopback)";
+    if (geoEl) geoEl.innerText = "Local Override Gateway";
   }
-  document.getElementById('user-device').innerText = navigator.userAgent.substring(0, 45) + "...";
-  document.getElementById('user-os').innerText = navigator.platform || "Architecture Masked";
+  const devEl = document.getElementById('user-device');
+  const osEl = document.getElementById('user-os');
+  if (devEl) devEl.innerText = navigator.userAgent.substring(0, 45) + "...";
+  if (osEl) osEl.innerText = navigator.platform || "Architecture Masked";
 }
 captureTelemetry();
 
 // ============================================================================
-// 4. TERMINAL LOG SIMULATOR CONSOLE
+// 5. TERMINAL LOG SIMULATOR CONSOLE
 // ============================================================================
 const initialLogs = [
   "[OK] Firewall initialized on sub-routing layers.",
@@ -433,10 +442,12 @@ function triggerBreachScan() {
   playGlitchSound();
   appendTerminalLine("[INIT] Launching thorough environment footprint audit...", 'var(--neon-yellow)');
   
+  const ipVal = document.getElementById('user-ip') ? document.getElementById('user-ip').innerText : "Unknown";
+  
   const sequence = [
     { msg: "[SCAN] Enumerating connected localized device pointers...", delay: 800 },
-    { msg: `[TRACE] Local Device Host IP identified: ${document.getElementById('user-ip').innerText}`, delay: 1600 },
-    { msg: `[TRACE] Browser Client Kernel: ${navigator.userAgent.split(' ')[0]} Engine Stack`, delay: 2400 },
+    { msg: `[TRACE] Local Device Host IP identified: ${ipVal}`, delay: 1600 },
+    { msg: `[TRACE] Browser Client Kernel: ${navigator.userAgent.split(' ')} Engine Stack`, delay: 2400 },
     { msg: "[SCAN] Searching memory modules for injection patterns...", delay: 3200 },
     { msg: "[WARN] 0x7FFA83B4 Sandbox validation bypass attempts flagged... Quarantined.", delay: 4000, color: 'var(--neon-pink)' },
     { msg: "[SCAN] Analyzing system environment variables for memory overflow leaks...", delay: 4800 },
@@ -456,14 +467,16 @@ function downloadManifestFile() {
   let logText = `PINOYUNKNOWN EXPORT LOG MANIFEST\n===============================\n`;
   logText += `TIMESTAMP: ${new Date().toISOString()}\n`;
   logText += `CLIENT REFS:\n`;
-  logText += ` - IP Pointer: ${document.getElementById('user-ip').innerText}\n`;
-  logText += ` - Location: ${document.getElementById('user-geo').innerText}\n`;
-  logText += ` - OS / Platform: ${document.getElementById('user-os').innerText}\n\n`;
+  logText += ` - IP Pointer: ${document.getElementById('user-ip') ? document.getElementById('user-ip').innerText : 'N/A'}\n`;
+  logText += ` - Location: ${document.getElementById('user-geo') ? document.getElementById('user-geo').innerText : 'N/A'}\n`;
+  logText += ` - OS / Platform: ${document.getElementById('user-os') ? document.getElementById('user-os').innerText : 'N/A'}\n\n`;
   logText += `TERMINAL DUMP:\n`;
   
-  consoleBox.querySelectorAll('p').forEach(p => {
-    logText += `${p.innerText}\n`;
-  });
+  if (consoleBox) {
+    consoleBox.querySelectorAll('p').forEach(p => {
+      logText += `${p.innerText}\n`;
+    });
+  }
   
   const blob = new Blob([logText], { type: 'text/plain' });
   const link = document.createElement('a');
@@ -473,50 +486,52 @@ function downloadManifestFile() {
 }
 
 // ============================================================================
-// 5. DECODER UTILITIES MANAGER (With Cryptographic Fail-safes)
+// 6. DECODER UTILITIES MANAGER (With Cryptographic Fail-safes)
 // ============================================================================
 function processCipher(type) {
-  const input = document.getElementById('toolInput').value;
-  const output = document.getElementById('toolOutput');
+  const inputField = document.getElementById('toolInput');
+  const outputField = document.getElementById('toolOutput');
+  if (!inputField || !outputField) return;
+
+  const input = inputField.value;
   
   if (!input) { 
     playBeep(140, 0.2); 
-    output.value = "ERROR: INPUT PAYLOAD EMPTY"; 
+    outputField.value = "ERROR: INPUT PAYLOAD EMPTY"; 
     return; 
   }
   
   playGlitchSound();
   try {
     if (type === 'base64-enc') {
-      output.value = btoa(input);
+      outputField.value = btoa(input);
     } else if (type === 'base64-dec') {
-      output.value = atob(input);
+      outputField.value = atob(input);
     } else if (type === 'md5') {
-      // Fallback check in case the blueimp md5 script load fails
       if (typeof md5 === 'function') {
-        output.value = md5(input);
+        outputField.value = md5(input);
       } else {
-        output.value = "ERROR: MD5 Library missing inside <head>";
+        outputField.value = "ERROR: MD5 Library missing inside <head>";
       }
     } else if (type === 'hex-enc') {
-      output.value = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+      outputField.value = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
     } else if (type === 'url-enc') {
-      output.value = encodeURIComponent(input);
+      outputField.value = encodeURIComponent(input);
     } else if (type === 'url-dec') {
-      output.value = decodeURIComponent(input);
+      outputField.value = decodeURIComponent(input);
     }
     
     appendTerminalLine(`[CIPHER] Action executed successfully: ${type.toUpperCase()}`, 'var(--neon-cyan)');
   } catch (e) {
     playBeep(140, 0.2);
-    output.value = "ERROR: EXECUTION FAILURE / INVALID STR";
+    outputField.value = "ERROR: EXECUTION FAILURE / INVALID STR";
   }
 }
 
 // Load Progress Gauges
-setTimeout(() => { document.getElementById('bar1').style.width = "94%"; }, 500);
-setTimeout(() => { document.getElementById('bar2').style.width = "100%"; }, 900);
-setTimeout(() => { document.getElementById('bar3').style.width = "87%"; }, 1300);
+setTimeout(() => { if(document.getElementById('bar1')) document.getElementById('bar1').style.width = "94%"; }, 500);
+setTimeout(() => { if(document.getElementById('bar2')) document.getElementById('bar2').style.width = "100%"; }, 900);
+setTimeout(() => { if(document.getElementById('bar3')) document.getElementById('bar3').style.width = "87%"; }, 1300);
 
   
 </script>
