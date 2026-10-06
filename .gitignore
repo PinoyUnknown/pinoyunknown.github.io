@@ -1,0 +1,23 @@
+# Local secret environments containing API keys
+.env
+.env.local
+.env.production
+*.env
+
+# Cryptographic and private keys
+*.pem
+*.key
+*.pub
+certs/
+id_rsa
+
+# Configurations containing credentials
+config.php
+config.json
+
+# Development builds & system directories
+node_modules/
+.DS_Store
+dist/
+build/
+.pnpm-debug.log*
