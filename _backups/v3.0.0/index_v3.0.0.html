@@ -371,124 +371,6 @@
     .model-table td {
       color: #bbb;
     }
-
-    /* Data Bank Panel Styling */
-    .databank-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 1.85fr;
-      gap: 15px;
-      grid-column: 1 / -1;
-    }
-
-    @media (max-width: 1024px) {
-      .databank-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .memory-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 520px;
-      overflow-y: auto;
-      padding-right: 5px;
-    }
-
-    .memory-card {
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid #333;
-      border-left: 3px solid var(--neon-yellow);
-      padding: 10px;
-      border-radius: 3px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.8rem;
-    }
-
-    .memory-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .memory-card-title {
-      font-weight: bold;
-      color: var(--neon-yellow);
-      font-size: 0.85rem;
-    }
-
-    .memory-card-meta {
-      font-size: 0.72rem;
-      color: #888;
-    }
-
-    .memory-card-keywords {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .keyword-tag {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid #444;
-      padding: 1px 5px;
-      font-size: 0.68rem;
-      color: var(--neon-cyan);
-    }
-
-    .memory-card-content {
-      background: rgba(255, 255, 255, 0.02);
-      padding: 8px;
-      border-radius: 2px;
-      color: #bbb;
-      max-height: 120px;
-      overflow-y: auto;
-      font-size: 0.76rem;
-      line-height: 1.4;
-      white-space: pre-wrap;
-    }
-
-    /* Passkey Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(3, 3, 7, 0.92);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(8px);
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-box {
-      background: var(--panel-bg);
-      border: 2px solid var(--neon-yellow);
-      box-shadow: 0 0 25px rgba(255, 235, 59, 0.3);
-      padding: 24px;
-      max-width: 440px;
-      width: 90%;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      text-align: center;
-    }
-
-    .modal-title {
-      color: var(--neon-yellow);
-      font-size: 1.1rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
   <script src="archangel-llm.js"></script>
@@ -502,7 +384,6 @@
     <nav role="tablist">
       <button class="nav-btn active" role="tab" aria-selected="true" data-tab="dashboard" onclick="switchTab('dashboard', this)">Terminal Hub</button>
       <button class="nav-btn" role="tab" aria-selected="false" data-tab="ai-manifesto" onclick="switchTab('ai-manifesto', this)">AI Core Manifesto</button>
-      <button class="nav-btn" role="tab" aria-selected="false" data-tab="databank" onclick="openDataBankTab(this)" style="border-color: rgba(255, 235, 59, 0.4); color: var(--neon-yellow);">⚡ Data Bank [Restricted]</button>
     </nav>
 
     <header>
@@ -601,8 +482,8 @@
           <div class="panel-title">ARCHANGEL AI // OFFLINE REPOSITORY NEURAL CORE</div>
           
           <div class="ai-hud-bar">
-            <span class="ai-hud-badge" id="aiHudStatusBadge">● ONLINE // ZERO-TOKEN REPO ENGINE</span>
-            <span>MODEL: ARCHANGEL-CORE v3.1</span>
+            <span class="ai-hud-badge">ΓùÅ ONLINE // ZERO-TOKEN REPO ENGINE</span>
+            <span>MODEL: ARCHANGEL-CORE v2.6</span>
             <span>LATENCY: &lt; 0.05ms (LOCAL)</span>
             <span>AIR-GAPPED: READY</span>
           </div>
@@ -612,22 +493,22 @@
             <div class="ai-msg ai-msg-assistant">
               <div class="ai-msg-sender">[ARCHANGEL-AI // NEURAL ENGINE]</div>
               <div class="ai-msg-content">
-                <strong>System Initialized.</strong> I am your in-repository offline AI assistant, operating entirely within client memory. I actively query your repository <strong>DATA BANK</strong> memory for custom developer knowledge, while maintaining complete offline capability for exploit analysis, penetration testing, firmware reversing, and 2026 open-source LLM guidance.<br><br>
-                What security or architectural question would you like to explore?
+                <strong>System Initialized.</strong> I am your in-repository offline AI assistant, operating entirely within client memory. No API keys, no token limits, and zero external network transmissions.<br><br>
+                Ask me about cyber-attack analysis, exploit mitigation (SQLi, XSS, Buffer Overflows), firewall rules, firmware reversing, or Hugging Face open-source LLM architectures.
               </div>
             </div>
           </div>
 
           <!-- Quick Query Prompt Chips -->
           <div class="ai-chip-bar">
-            <button class="prompt-chip" onclick="quickAsk('Tell me about Ghost-Firmware protocol on the Cardputer')">🗄️ Query Data Bank Entry</button>
-            <button class="prompt-chip" onclick="quickAsk('Explain SQL Injection and how to prevent it in Python')">💉 SQLi Defense</button>
-            <button class="prompt-chip" onclick="quickAsk('Explain XSS attack types and Content Security Policy')">⚡ XSS & CSP</button>
-            <button class="prompt-chip" onclick="quickAsk('How do Buffer Overflows work and what are stack canaries?')">💥 Buffer Overflows</button>
-            <button class="prompt-chip" onclick="quickAsk('What are the latest 2026 frontier open-source LLMs?')">🚀 2026 Open LLMs</button>
-            <button class="prompt-chip" onclick="quickAsk('Show me iptables firewall rules for anti-DDoS and Tor routing')">🛡️ iptables & Tor</button>
-            <button class="prompt-chip" onclick="quickAsk('How to audit ESP32 or Cardputer firmware using esptool')">👾 Firmware Reversing</button>
-            <button class="prompt-chip" onclick="quickAsk('Who is PinoyUnknown and what projects are in this ecosystem?')">⚡ Architect Profile</button>
+            <button class="prompt-chip" onclick="quickAsk('Explain SQL Injection and how to prevent it in Python')">≡ƒÆë SQLi Defense</button>
+            <button class="prompt-chip" onclick="quickAsk('Explain XSS attack types and Content Security Policy')">ΓÜí XSS & CSP</button>
+            <button class="prompt-chip" onclick="quickAsk('How do Buffer Overflows work and what are stack canaries?')">≡ƒÆÑ Buffer Overflows</button>
+            <button class="prompt-chip" onclick="quickAsk('What are the best open-source LLMs from Hugging Face 2026?')">≡ƒÅå 2026 Open LLMs</button>
+            <button class="prompt-chip" onclick="quickAsk('How does a Transformer model and self-attention work?')">≡ƒºá Transformers</button>
+            <button class="prompt-chip" onclick="quickAsk('Show me iptables firewall rules for anti-DDoS and Tor routing')">≡ƒ¢í∩╕Å iptables & Tor</button>
+            <button class="prompt-chip" onclick="quickAsk('How to audit ESP32 or Cardputer firmware using esptool')">≡ƒæ╛ Firmware Reversing</button>
+            <button class="prompt-chip" onclick="quickAsk('Who is PinoyUnknown and what projects are in this ecosystem?')">ΓÜí Architect Profile</button>
           </div>
 
           <!-- Interactive AI Input Bar -->
@@ -644,7 +525,7 @@
           <div class="panel-title">AI Core Manifesto & Architecture Matrix</div>
 
           <div class="ai-desc-block">
-            <strong>Large Language Models (LLMs):</strong> Advanced AI systems built on deep neural networks—typically with billions of parameters—designed to understand and generate human-like text, code, and structured intelligence.
+            <strong>Large Language Models (LLMs):</strong> Advanced AI systems built on deep neural networksΓÇötypically with billions of parametersΓÇödesigned to understand and generate human-like text, code, and structured intelligence.
           </div>
 
           <div class="ai-desc-block">
@@ -695,94 +576,13 @@
 
       </div>
     </div>
-
-    <!-- TAB 3: DATA BANK // DEVELOPER MEMORY MANAGEMENT CONSOLE -->
-    <div id="tab-databank" class="tab-content" role="tabpanel">
-      <div class="databank-grid">
-        
-        <!-- Left: Memory Injection Form -->
-        <div class="panel">
-          <div class="panel-title" style="color: var(--neon-yellow); border-bottom-color: rgba(255, 235, 59, 0.4);">
-            DATA BANK // MEMORY VECTOR INJECTOR
-          </div>
-          <p style="font-size: 0.78rem; color: #aaa;">
-            Inject proprietary details, tool documentation, or custom intelligence into the repository AI memory bank. The in-repo AI will immediately use this data to answer visitor questions.
-          </p>
-
-          <div class="tool-group">
-            <input type="text" id="memTitle" placeholder="Memory Title / Subject (e.g. Ghost-Firmware Protocol)">
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-              <input type="text" id="memCategory" placeholder="Category (e.g. Firmware, Exploit, FAQ)">
-              <select id="memPriority" style="color: #fff; background: rgba(0,0,0,0.8);">
-                <option value="Standard">Standard Priority</option>
-                <option value="High">High Priority</option>
-                <option value="Critical">Critical Override</option>
-              </select>
-            </div>
-
-            <input type="text" id="memKeywords" placeholder="Trigger Keywords (comma-separated, e.g. ghost, firmware, esp32)">
-            
-            <textarea id="memContent" rows="6" placeholder="Information / Memory Payload (Markdown supported. This is the exact knowledge the AI will recall and synthesize for users)..."></textarea>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-              <button onclick="commitMemoryNode()" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">COMMIT MEMORY</button>
-              <button onclick="clearMemoryForm()" style="border-color: #555; color: #888;">CLEAR FORM</button>
-              <button onclick="exportDataBankJson()" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">EXPORT databank.json</button>
-              <button onclick="triggerImportJson()" style="border-color: var(--neon-pink); color: var(--neon-pink);">IMPORT databank.json</button>
-            </div>
-            <input type="file" id="importJsonFileInput" accept=".json" style="display: none;" onchange="handleImportFile(event)">
-
-            <div style="margin-top: 10px; border-top: 1px dashed #444; padding-top: 8px; display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.72rem; color: #888;">Developer Master Key:</span>
-              <button onclick="changeMasterPasskey()" style="padding: 4px 8px; font-size: 0.7rem; border-color: #666; color: #ccc;">CHANGE PASSKEY</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Active Memory Bank Registry -->
-        <div class="panel">
-          <div class="panel-title" style="color: var(--neon-yellow); border-bottom-color: rgba(255, 235, 59, 0.4); display: flex; justify-content: space-between; align-items: center;">
-            <span>ACTIVE REPOSITORY MEMORY REGISTRY</span>
-            <span id="memoryCountBadge" style="font-size: 0.75rem; color: var(--neon-cyan);">0 NODES</span>
-          </div>
-
-          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-            <input type="text" id="memorySearchInput" placeholder="Filter memory nodes by title or keyword..." oninput="renderMemoryList(this.value)" style="flex: 1; padding: 6px 10px; font-size: 0.78rem;">
-            <button onclick="renderMemoryList()" style="padding: 6px 12px; border-color: var(--neon-cyan); color: var(--neon-cyan);">REFRESH</button>
-          </div>
-
-          <div class="memory-list" id="memoryCardContainer">
-            <!-- Dynamically populated memory cards -->
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- Developer Passkey Modal for Data Bank Access -->
-  <div id="databank-modal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-title">🔐 RESTRICTED SECURITY CLEARANCE</div>
-      <p style="font-size: 0.8rem; color: #ccc; line-height: 1.5;">
-        ACCESS TO <strong>DATA BANK (DEVELOPER MEMORY CONSOLE)</strong> IS RESTRICTED TO AUTHORIZED REPOSITORY ARCHITECTS ONLY.<br>
-        PLEASE TRANSMIT MASTER ACCESS KEY:
-      </p>
-      <input type="password" id="devPasskeyInput" placeholder="Enter developer master passkey..." style="text-align: center; font-size: 1rem; letter-spacing: 2px;" onkeydown="if(event.key==='Enter') verifyDevClearance();">
-      <div style="display: flex; gap: 10px;">
-        <button onclick="verifyDevClearance()" style="flex: 2; border-color: var(--neon-yellow); color: var(--neon-yellow);">VERIFY CLEARANCE</button>
-        <button onclick="closeDataBankModal()" style="flex: 1; border-color: #555; color: #888;">ABORT</button>
-      </div>
-      <p id="authErrorMsg" style="color: var(--neon-pink); font-size: 0.75rem; display: none;">INVALID PASSKEY // ACCESS DENIED</p>
-    </div>
   </div>
 
   <script>
   // Core Elements Initialization
   const canvas = document.getElementById('matrixCanvas');
   const ctx = canvas ? canvas.getContext('2d') : null;
-  const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
+  const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZπéóπéñπéªπé¿πé¬πé½πé¡πé»πé▒πé│πé╡πé╖πé╣πé╗πé╜πé┐πâüπâäπâåπâê";
   const charArray = matrixChars.split("");
   const fontSize = 14;
   let rainDrops = [];
@@ -1548,6 +1348,7 @@
       } else if (type === 'rot13') {
         outputField.value = input.replace(/[a-zA-Z]/g, c => String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26));
       } else if (type === 'xor') {
+        // If input looks like hex bytes (e.g. "32 3f..."), decode, else encode
         const isHexArray = /^[0-9a-fA-F\s]+$/.test(input.trim()) && input.includes(' ');
         if (isHexArray) {
           const bytes = input.trim().split(/\s+/);
@@ -1615,7 +1416,7 @@
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/\n\n/g, '<br><br>')
-      .replace(/\n- /g, '<br>• ');
+      .replace(/\n- /g, '<br>ΓÇó ');
   }
 
   // AI Chat Interface Engine
@@ -1655,11 +1456,11 @@
     appendAiChat('USER', prompt, false);
 
     const chatBox = document.getElementById('aiChatFeed');
-    const assistantBubble = appendAiChat('ARCHANGEL', 'Evaluating neural tensors & Data Bank memories...', false);
+    const assistantBubble = appendAiChat('ARCHANGEL', 'Evaluating neural tensors in local repository...', false);
 
     if (window.ArchangelLLM) {
       let accumulatedText = "";
-      assistantBubble.innerHTML = "<span style='color:var(--neon-yellow);'>[QUERYING REPOSITORY DATA BANK & NEURAL CORE...]</span>";
+      assistantBubble.innerHTML = "<span style='color:var(--neon-yellow);'>[COMPUTING TENSOR WEIGHTS...]</span>";
       
       setTimeout(() => {
         assistantBubble.innerHTML = "";
@@ -1695,8 +1496,8 @@
         <div class="ai-msg ai-msg-assistant">
           <div class="ai-msg-sender">[ARCHANGEL-AI // NEURAL ENGINE]</div>
           <div class="ai-msg-content">
-            Context buffer purged. Model weights & Data Bank linked in local memory.<br>
-            Standing by for security, exploit analysis, or custom memory inquiries.
+            Context buffer purged. Model weights re-initialized in local client memory.<br>
+            Standing by for security, exploit analysis, or LLM inquiries.
           </div>
         </div>
       `;
@@ -1708,7 +1509,7 @@
     const chatBox = document.getElementById('aiChatFeed');
     if (!chatBox) return;
     let text = "ARCHANGEL AI // NEURAL CHAT TRANSCRIPT EXPORT\n" + "=".repeat(50) + "\n";
-    text += `TIMESTAMP: ${new Date().toISOString()}\nMODEL: ARCHANGEL-CORE v3.1 OFFLINE\n\n`;
+    text += `TIMESTAMP: ${new Date().toISOString()}\nMODEL: ARCHANGEL-CORE v2.6 OFFLINE\n\n`;
     
     chatBox.querySelectorAll('.ai-msg').forEach(msg => {
       const sender = msg.querySelector('.ai-msg-sender') ? msg.querySelector('.ai-msg-sender').innerText : 'UNKNOWN';
@@ -1726,261 +1527,6 @@
     setTimeout(() => URL.revokeObjectURL(link.href), 1500);
     playGlitchSound();
   }
-
-  // --- DATA BANK DEVELOPER CONTROLS ---
-  let isDevAuthenticated = false;
-  const DEFAULT_DEV_HASH = "8f3b610c1411516eef2478d388ffc77873a4666cf7b71ad761bc9be2054ff143"; // SHA-256 of "pinoyunknown"
-
-  function getStoredPasskeyHash() {
-    return localStorage.getItem('archangel_dev_passkey_hash') || DEFAULT_DEV_HASH;
-  }
-
-  function openDataBankTab(clickedBtn) {
-    if (isDevAuthenticated) {
-      switchTab('databank', clickedBtn);
-      renderMemoryList();
-    } else {
-      const modal = document.getElementById('databank-modal');
-      if (modal) {
-        modal.classList.add('active');
-        const input = document.getElementById('devPasskeyInput');
-        if (input) {
-          input.value = '';
-          input.focus();
-        }
-      }
-    }
-  }
-
-  function closeDataBankModal() {
-    const modal = document.getElementById('databank-modal');
-    if (modal) modal.classList.remove('active');
-    const err = document.getElementById('authErrorMsg');
-    if (err) err.style.display = 'none';
-  }
-
-  function verifyDevClearance() {
-    const input = document.getElementById('devPasskeyInput');
-    const err = document.getElementById('authErrorMsg');
-    if (!input) return;
-
-    const val = input.value.trim();
-    const inputHash = calcSHA256(val);
-    const targetHash = getStoredPasskeyHash();
-
-    if (val === 'pinoyunknown' || inputHash === targetHash) {
-      isDevAuthenticated = true;
-      closeDataBankModal();
-      playGlitchSound();
-      const devBtn = document.querySelector('.nav-btn[data-tab="databank"]');
-      switchTab('databank', devBtn);
-      renderMemoryList();
-      appendTerminalLine('[SECURITY CLEARANCE GRANTED] Architect authenticated into DATA BANK console.', 'var(--neon-yellow)');
-    } else {
-      playBeep(140, 0.25);
-      if (err) err.style.display = 'block';
-    }
-  }
-
-  function changeMasterPasskey() {
-    const current = prompt("Enter current master passkey:");
-    if (!current) return;
-    if (current === 'pinoyunknown' || calcSHA256(current) === getStoredPasskeyHash()) {
-      const newKey = prompt("Enter NEW developer master passkey (minimum 6 characters):");
-      if (newKey && newKey.trim().length >= 6) {
-        const newHash = calcSHA256(newKey.trim());
-        localStorage.setItem('archangel_dev_passkey_hash', newHash);
-        alert("Master passkey updated successfully! Remember to store your new key safely.");
-      } else {
-        alert("Password change aborted or too short.");
-      }
-    } else {
-      alert("Invalid current passkey. Access denied.");
-    }
-  }
-
-  function renderMemoryList(filterText = '') {
-    const container = document.getElementById('memoryCardContainer');
-    const badge = document.getElementById('memoryCountBadge');
-    if (!container || !window.ArchangelLLM) return;
-
-    const memories = window.ArchangelLLM.getMemories() || [];
-    if (badge) badge.innerText = `${memories.length} ACTIVE NODES`;
-
-    const term = (filterText || "").toLowerCase().trim();
-    const filtered = memories.filter(m => {
-      if (!term) return true;
-      const kws = Array.isArray(m.keywords) ? m.keywords.join(' ') : (m.keywords || '');
-      return (m.title && m.title.toLowerCase().includes(term)) ||
-             (m.category && m.category.toLowerCase().includes(term)) ||
-             kws.toLowerCase().includes(term);
-    });
-
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div style="color: #666; font-size: 0.8rem; text-align: center; padding: 20px;">
-          No matching memory nodes found in Data Bank.
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = filtered.map(m => {
-      const kws = Array.isArray(m.keywords) ? m.keywords : (m.keywords ? m.keywords.split(',') : []);
-      const kwTags = kws.map(k => `<span class="keyword-tag">${k.trim()}</span>`).join('');
-      return `
-        <div class="memory-card" id="card-${m.id}">
-          <div class="memory-card-header">
-            <span class="memory-card-title">${m.title}</span>
-            <div style="display:flex; gap:6px;">
-              <button onclick="editMemoryNode('${m.id}')" style="padding:2px 6px; font-size:0.68rem; border-color:var(--neon-cyan); color:var(--neon-cyan);">EDIT</button>
-              <button onclick="deleteMemoryNode('${m.id}')" style="padding:2px 6px; font-size:0.68rem; border-color:var(--neon-pink); color:var(--neon-pink);">DELETE</button>
-            </div>
-          </div>
-          <div class="memory-card-meta">
-            <span><strong>CAT:</strong> ${m.category || 'General'}</span> | 
-            <span><strong>PRIORITY:</strong> ${m.priority || 'Standard'}</span> |
-            <span><strong>DATE:</strong> ${m.timestamp ? m.timestamp.split('T')[0] : 'Active'}</span>
-          </div>
-          <div class="memory-card-keywords">${kwTags}</div>
-          <div class="memory-card-content">${m.content}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function commitMemoryNode() {
-    const title = document.getElementById('memTitle').value.trim();
-    const category = document.getElementById('memCategory').value.trim();
-    const priority = document.getElementById('memPriority').value;
-    const keywords = document.getElementById('memKeywords').value.trim();
-    const content = document.getElementById('memContent').value.trim();
-
-    if (!title || !content) {
-      alert("Please provide both a Title and Content payload for the memory node.");
-      return;
-    }
-
-    if (window.ArchangelLLM) {
-      window.ArchangelLLM.addMemory({
-        title,
-        category: category || "Developer Notes",
-        priority,
-        keywords: keywords.split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
-        content
-      });
-
-      playGlitchSound();
-      renderMemoryList();
-      clearMemoryForm();
-      updateDataBankHud();
-      appendTerminalLine(`[DATA BANK INJECT] Memory committed: "${title}"`, 'var(--neon-yellow)');
-    }
-  }
-
-  function clearMemoryForm() {
-    document.getElementById('memTitle').value = '';
-    document.getElementById('memCategory').value = '';
-    document.getElementById('memKeywords').value = '';
-    document.getElementById('memContent').value = '';
-  }
-
-  function deleteMemoryNode(id) {
-    if (confirm("Are you sure you want to permanently purge this memory node?")) {
-      if (window.ArchangelLLM) {
-        window.ArchangelLLM.removeMemory(id);
-        renderMemoryList();
-        updateDataBankHud();
-        playBeep(240, 0.1);
-      }
-    }
-  }
-
-  function editMemoryNode(id) {
-    if (!window.ArchangelLLM) return;
-    const mems = window.ArchangelLLM.getMemories() || [];
-    const item = mems.find(m => m.id === id);
-    if (!item) return;
-
-    document.getElementById('memTitle').value = item.title;
-    document.getElementById('memCategory').value = item.category || '';
-    document.getElementById('memPriority').value = item.priority || 'Standard';
-    document.getElementById('memKeywords').value = Array.isArray(item.keywords) ? item.keywords.join(', ') : (item.keywords || '');
-    document.getElementById('memContent').value = item.content || '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function exportDataBankJson() {
-    if (!window.ArchangelLLM) return;
-    const data = window.ArchangelLLM.getMemories() || [];
-    const jsonStr = JSON.stringify(data, null, 2);
-    
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'databank.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => URL.revokeObjectURL(link.href), 1500);
-
-    playGlitchSound();
-    appendTerminalLine("[DATA BANK EXPORT] databank.json generated for repository commit.", 'var(--neon-cyan)');
-  }
-
-  function triggerImportJson() {
-    const fileInput = document.getElementById('importJsonFileInput');
-    if (fileInput) fileInput.click();
-  }
-
-  function handleImportFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const parsed = JSON.parse(e.target.result);
-        if (Array.isArray(parsed) && window.ArchangelLLM) {
-          const count = window.ArchangelLLM.importDataBank(parsed);
-          renderMemoryList();
-          updateDataBankHud();
-          playGlitchSound();
-          alert(`Successfully imported and merged ${count} memory nodes into the Data Bank!`);
-        } else {
-          alert("Invalid file format. Expected a JSON array of memory objects.");
-        }
-      } catch (err) {
-        alert("Failed to parse JSON file: " + err.message);
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  function updateDataBankHud() {
-    if (!window.ArchangelLLM) return;
-    const count = (window.ArchangelLLM.getMemories() || []).length;
-    const hudBadge = document.getElementById('aiHudStatusBadge');
-    if (hudBadge) {
-      hudBadge.innerText = `● ONLINE // DATA BANK ACTIVE (${count} MEMORIES)`;
-    }
-  }
-
-  // Auto-fetch databank.json from repository on launch
-  async function initRepositoryDataBank() {
-    try {
-      const res = await fetch('databank.json');
-      if (res.ok) {
-        const repoData = await res.json();
-        if (Array.isArray(repoData) && window.ArchangelLLM) {
-          window.ArchangelLLM.importDataBank(repoData);
-          updateDataBankHud();
-        }
-      }
-    } catch (_) {}
-    updateDataBankHud();
-  }
-  initRepositoryDataBank();
   </script>
 </body>
 </html>
