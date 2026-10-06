@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
+
 <head>
+    <!-- Keep your other tags here -->
+  <script src="https://cloudflare.com"></script>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PINOYUNKNOWN // APPS & CORE SECURITY DEVELOPER</title>
@@ -274,48 +280,74 @@
     </div>
   </div>
 
-  <script>
-    // Audio Generation Framework
-    let audioCtx = null;
-    function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    
-    function playGlitchSound() {
-      initAudio(); if (!audioCtx) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = Math.random() > 0.5 ? 'sawtooth' : 'square';
-      osc.frequency.setValueAtTime(Math.random() * 800 + 200, now);
-      osc.frequency.setValueAtTime(Math.random() * 1200 + 300, now + 0.05);
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.start(now); osc.stop(now + 0.16);
-    }
+<script>
+// ============================================================================
+// 1. AUDIO UTILITY ENGINE (Synthetic Synth Web Audio API)
+// ============================================================================
+let audioCtx = null;
 
-    function playBeep(freq, dur) {
-      initAudio(); if (!audioCtx) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine'; osc.frequency.setValueAtTime(freq, now);
-      gain.gain.setValueAtTime(0.05, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.start(now); osc.stop(now + dur);
-    }
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
 
-    // Canvas Background Initialization
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-    let rainDrops = [];
-    const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
-    const charArray = matrixChars.split("");
-    const fontSize = 14;
+function playGlitchSound() {
+  initAudio();
+  if (!audioCtx) return;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-      function resizeCanvas() {
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  
+  osc.type = Math.random() > 0.5 ? 'sawtooth' : 'square';
+  osc.frequency.setValueAtTime(Math.random() * 800 + 200, now);
+  osc.frequency.setValueAtTime(Math.random() * 1200 + 400, now + 0.04);
+  osc.frequency.setValueAtTime(Math.random() * 300 + 100, now + 0.08);
+  
+  gainNode.gain.setValueAtTime(0.1, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+  
+  osc.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  
+  osc.start(now);
+  osc.stop(now + 0.16);
+}
+
+function playBeep(freq, duration) {
+  initAudio();
+  if (!audioCtx) return;
+
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, now);
+  gainNode.gain.setValueAtTime(0.05, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  osc.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  osc.start(now);
+  osc.stop(now + duration);
+}
+
+// ============================================================================
+// 2. CANVAS MATRIX BACKGROUND ANIMATION
+// ============================================================================
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
+const charArray = matrixChars.split("");
+const fontSize = 14;
+let rainDrops = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   let columns = canvas.width / fontSize;
   rainDrops = Array(Math.floor(columns)).fill(1);
 }
@@ -340,14 +372,15 @@ function drawMatrix() {
 }
 setInterval(drawMatrix, 33);
 
-// Metadata & Dynamic Geolocation Tracing
+// ============================================================================
+// 3. SYSTEM METRICS & TELEMETRY LOOKUPS
+// ============================================================================
 function updateClock() {
   document.getElementById('live-clock').innerText = `SYS_TIME: [${new Date().toTimeString().split(' ')[0]}]`;
 }
 setInterval(updateClock, 1000); 
 updateClock();
 
-// Fetch IP and Network Telemetry
 async function captureTelemetry() {
   try {
     const response = await fetch('https://ipapi.co');
@@ -363,7 +396,9 @@ async function captureTelemetry() {
 }
 captureTelemetry();
 
-// Initial Dashboard Terminal Logger Flow
+// ============================================================================
+// 4. TERMINAL LOG SIMULATOR CONSOLE
+// ============================================================================
 const initialLogs = [
   "[OK] Firewall initialized on sub-routing layers.",
   "[INFO] Secure Git environment verified. Zero vulnerability leaks.",
@@ -382,6 +417,7 @@ function bootLogStream() {
 setTimeout(bootLogStream, 1000);
 
 function appendTerminalLine(text, color = '#00ff66') {
+  if (!consoleBox) return;
   const p = document.createElement('p');
   p.innerText = `> ${text}`;
   p.style.color = color;
@@ -389,7 +425,6 @@ function appendTerminalLine(text, color = '#00ff66') {
   consoleBox.scrollTop = consoleBox.scrollHeight;
 }
 
-// Extended Structural Simulator Threat Scan Sequencer
 function triggerBreachScan() {
   playGlitchSound();
   appendTerminalLine("[INIT] Launching thorough environment footprint audit...", 'var(--neon-yellow)');
@@ -412,7 +447,6 @@ function triggerBreachScan() {
   });
 }
 
-// File Manifest Downloader Engine
 function downloadManifestFile() {
   playGlitchSound();
   let logText = `PINOYUNKNOWN EXPORT LOG MANIFEST\n===============================\n`;
@@ -434,7 +468,9 @@ function downloadManifestFile() {
   link.click();
 }
 
-// Decoder Utilities Manager
+// ============================================================================
+// 5. DECODER UTILITIES MANAGER (With Cryptographic Fail-safes)
+// ============================================================================
 function processCipher(type) {
   const input = document.getElementById('toolInput').value;
   const output = document.getElementById('toolOutput');
@@ -447,12 +483,24 @@ function processCipher(type) {
   
   playGlitchSound();
   try {
-    if (type === 'base64-enc') output.value = btoa(input);
-    else if (type === 'base64-dec') output.value = atob(input);
-    else if (type === 'md5') output.value = md5(input);
-    else if (type === 'hex-enc') output.value = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-    else if (type === 'url-enc') output.value = encodeURIComponent(input);
-    else if (type === 'url-dec') output.value = decodeURIComponent(input);
+    if (type === 'base64-enc') {
+      output.value = btoa(input);
+    } else if (type === 'base64-dec') {
+      output.value = atob(input);
+    } else if (type === 'md5') {
+      // Fallback check in case the blueimp md5 script load fails
+      if (typeof md5 === 'function') {
+        output.value = md5(input);
+      } else {
+        output.value = "ERROR: MD5 Library missing inside <head>";
+      }
+    } else if (type === 'hex-enc') {
+      output.value = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    } else if (type === 'url-enc') {
+      output.value = encodeURIComponent(input);
+    } else if (type === 'url-dec') {
+      output.value = decodeURIComponent(input);
+    }
     
     appendTerminalLine(`[CIPHER] Action executed successfully: ${type.toUpperCase()}`, 'var(--neon-cyan)');
   } catch (e) {
@@ -461,7 +509,10 @@ function processCipher(type) {
   }
 }
 
+// Load Progress Gauges
 setTimeout(() => { document.getElementById('bar1').style.width = "94%"; }, 500);
 setTimeout(() => { document.getElementById('bar2').style.width = "100%"; }, 900);
 setTimeout(() => { document.getElementById('bar3').style.width = "87%"; }, 1300);
- </script>
+
+  
+</script>
