@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PINOYUNKNOWN // APPS & CORE SECURITY DEVELOPER</title>
+  <style>
+    :root {
+      --neon-pink: #ff007f;
+      --neon-cyan: #00f3ff;
+      --neon-yellow: #ffeb3b;
+      --bg-dark: #030307;
+      --panel-bg: rgba(3, 3, 7, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg-dark);
+      font-family: 'Courier New', Courier, monospace;
+      color: #fff;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .dashboard-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr; /* 3 Column Architecture */
+      grid-template-rows: auto 1fr;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    header {
+      grid-column: 1 / -1;
+      background: var(--panel-bg);
+      border: 1px solid var(--neon-pink);
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+    }
+
+    header h1 {
+      color: var(--neon-pink);
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+    }
+
+    .sys-info {
+      font-size: 0.85rem;
+      color: var(--neon-cyan);
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 4px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.05);
+      backdrop-filter: blur(4px);
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      color: var(--neon-cyan);
+      border-bottom: 1px dashed rgba(0, 243, 255, 0.4);
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .badge-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid var(--neon-cyan);
+      padding: 3px 6px;
+      font-size: 0.75rem;
+    }
+
+    .metric-row { margin-bottom: 5px; }
+    .metric-label {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .bar-bg { background: rgba(255,255,255,0.1); height: 6px; border-radius: 2px; overflow: hidden; }
+    .bar-fill { height: 100%; width: 0%; background: var(--neon-pink); transition: width 1.5s ease-out; }
+
+    .console {
+      flex: 1;
+      min-height: 250px;
+      max-height: 450px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #222;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    .console p { margin-bottom: 3px; color: #00ff66; }
+
+    .tool-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    input, select, textarea {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--neon-cyan);
+      padding: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid var(--neon-pink);
+      color: var(--neon-pink);
+      padding: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: var(--neon-pink);
+      color: #000;
+      box-shadow: 0 0 8px var(--neon-pink);
+    }
+    
+    .telemetry-data {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #ccc;
+    }
+    .telemetry-data span {
+      color: var(--neon-yellow);
+    }
+  </style>
+  <!-- MD5 Global Library Injection -->
+  <script src="https://cloudflare.com"></script>
+</head>
+<body>
+
+  <canvas id="matrixCanvas"></canvas>
+
+  <div class="dashboard-container">
+    <header>
+      <div><h1>SYSTEM_INIT // PINOYUNKNOWN</h1></div>
+      <div class="sys-info">
+        LOC_REF: METRO_MANILA // GLOBAL_NET<br>
+        SECURE_LAYER: ENFORCED | <span id="live-clock">SYS_TIME: [--:--:--]</span>
+      </div>
+    </header>
+
+    <!-- COLUMN 1: Profile & Telemetry Data -->
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <div class="panel">
+        <div class="panel-title">The Architect Overview</div>
+        <p style="font-size: 0.85rem; line-height: 1.5; color: #ccc;">
+          Specializing in high-performance application development, security engineering, and embedded firmware configurations.
+        </p>
+        <div class="badge-container">
+          <span class="badge">TypeScript</span> <span class="badge">Node.js</span>
+          <span class="badge">Python</span> <span class="badge">PHP</span> <span class="badge">Embedded C/C++</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Hardware Systems</div>
+        <div class="metric-row">
+          <div class="metric-label"><span>SYS_INTEGRITY</span><span>94%</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="bar1"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label"><span>ENC_STRENGTH</span><span>100%</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="bar2"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label"><span>NET_STABILITY</span><span>87%</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="bar3"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Target Environmental Telemetry</div>
+        <div class="telemetry-data">
+          IP ADDRESS: <span id="user-ip">Detecting routing trace...</span><br>
+          LOCATION: <span id="user-geo">Querying regional ISP...</span><br>
+          USER AGENT: <span id="user-device">Parsing environment variables...</span><br>
+          PLATFORM: <span id="user-os">Extracting hardware layer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMN 2: System Monitor Stream -->
+    <div class="panel">
+      <div class="panel-title">Monitor_Logs // Cognitive_Feed</div>
+      <div class="console" id="terminalConsole">
+        <p>[SYSTEM] Initializing core secure modules...</p>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: auto;">
+        <button onclick="triggerBreachScan()" style="border-color: var(--neon-yellow); color: var(--neon-yellow); flex: 2;">Run Threat Scan</button>
+        <button onclick="downloadManifestFile()" style="border-color: var(--neon-cyan); color: var(--neon-cyan); flex: 1;">Save Logs</button>
+      </div>
+    </div>
+
+    <!-- COLUMN 3: Central Crypto & Encoding Toolkit -->
+    <div class="panel">
+      <div class="panel-title">Sec_Decoder // Crypto_Tool_Suite</div>
+      <div class="tool-group">
+        <textarea id="toolInput" rows="3" placeholder="Input target payload text here..."></textarea>
+        
+        <div class="grid-buttons">
+          <button onclick="processCipher('base64-enc')">Base64 Enc</button>
+          <button onclick="processCipher('base64-dec')">Base64 Dec</button>
+          <button onclick="processCipher('md5')">MD5 Hash</button>
+          <button onclick="processCipher('hex-enc')">Hex Encode</button>
+          <button onclick="processCipher('url-enc')">URL Encode</button>
+          <button onclick="processCipher('url-dec')">URL Decode</button>
+        </div>
+
+        <textarea id="toolOutput" rows="4" placeholder="Output manifest generated..." readonly style="border-color: #333; color: var(--neon-cyan);"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Audio Generation Framework
+    let audioCtx = null;
+    function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    
+    function playGlitchSound() {
+      initAudio(); if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = Math.random() > 0.5 ? 'sawtooth' : 'square';
+      osc.frequency.setValueAtTime(Math.random() * 800 + 200, now);
+      osc.frequency.setValueAtTime(Math.random() * 1200 + 300, now + 0.05);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(now); osc.stop(now + 0.16);
+    }
+
+    function playBeep(freq, dur) {
+      initAudio(); if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.setValueAtTime(freq, now);
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(now); osc.stop(now + dur);
+    }
+
+    // Canvas Background Initialization
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let rainDrops = [];
+    const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト";
+    const charArray = matrixChars.split("");
+    const fontSize = 14;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      function resizeCanvas() {
+  let columns = canvas.width / fontSize;
+  rainDrops = Array(Math.floor(columns)).fill(1);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(3, 3, 7, 0.05)'; 
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#ff007f'; 
+  ctx.font = fontSize + 'px monospace';
+  
+  for (let i = 0; i < rainDrops.length; i++) {
+    const text = charArray[Math.floor(Math.random() * charArray.length)];
+    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+    
+    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      rainDrops[i] = 0;
+    }
+    rainDrops[i]++;
+  }
+}
+setInterval(drawMatrix, 33);
+
+// Metadata & Dynamic Geolocation Tracing
+function updateClock() {
+  document.getElementById('live-clock').innerText = `SYS_TIME: [${new Date().toTimeString().split(' ')[0]}]`;
+}
+setInterval(updateClock, 1000); 
+updateClock();
+
+// Fetch IP and Network Telemetry
+async function captureTelemetry() {
+  try {
+    const response = await fetch('https://ipapi.co');
+    const data = await response.json();
+    document.getElementById('user-ip').innerText = data.ip || "Unknown Pointer";
+    document.getElementById('user-geo').innerText = `${data.city || 'Unknown City'}, ${data.country_name || 'Global Link'}`;
+  } catch (err) {
+    document.getElementById('user-ip').innerText = "127.0.0.1 (Loopback)";
+    document.getElementById('user-geo').innerText = "Local Override Gateway";
+  }
+  document.getElementById('user-device').innerText = navigator.userAgent.substring(0, 45) + "...";
+  document.getElementById('user-os').innerText = navigator.platform || "Architecture Masked";
+}
+captureTelemetry();
+
+// Initial Dashboard Terminal Logger Flow
+const initialLogs = [
+  "[OK] Firewall initialized on sub-routing layers.",
+  "[INFO] Secure Git environment verified. Zero vulnerability leaks.",
+  "[CONNECT] Establishing distributed matrix relays across endpoints..."
+];
+let initialIndex = 0;
+const consoleBox = document.getElementById('terminalConsole');
+
+function bootLogStream() {
+  if (initialIndex < initialLogs.length) {
+    appendTerminalLine(initialLogs[initialIndex]);
+    initialIndex++;
+    setTimeout(bootLogStream, 1200);
+  }
+}
+setTimeout(bootLogStream, 1000);
+
+function appendTerminalLine(text, color = '#00ff66') {
+  const p = document.createElement('p');
+  p.innerText = `> ${text}`;
+  p.style.color = color;
+  consoleBox.appendChild(p);
+  consoleBox.scrollTop = consoleBox.scrollHeight;
+}
+
+// Extended Structural Simulator Threat Scan Sequencer
+function triggerBreachScan() {
+  playGlitchSound();
+  appendTerminalLine("[INIT] Launching thorough environment footprint audit...", 'var(--neon-yellow)');
+  
+  const sequence = [
+    { msg: "[SCAN] Enumerating connected localized device pointers...", delay: 800 },
+    { msg: `[TRACE] Local Device Host IP identified: ${document.getElementById('user-ip').innerText}`, delay: 1600 },
+    { msg: `[TRACE] Browser Client Kernel: ${navigator.userAgent.split(' ')[0]} Engine Stack`, delay: 2400 },
+    { msg: "[SCAN] Searching memory modules for injection patterns...", delay: 3200 },
+    { msg: "[WARN] 0x7FFA83B4 Sandbox validation bypass attempts flagged... Quarantined.", delay: 4000, color: 'var(--neon-pink)' },
+    { msg: "[SCAN] Analyzing system environment variables for memory overflow leaks...", delay: 4800 },
+    { msg: "[COMPLETED] Threat check fully complete. Integrity baseline: STABLE.", delay: 5600, color: 'var(--neon-cyan)' }
+  ];
+  
+  sequence.forEach(step => {
+    setTimeout(() => {
+      playBeep(440, 0.04);
+      appendTerminalLine(step.msg, step.color || '#00ff66');
+    }, step.delay);
+  });
+}
+
+// File Manifest Downloader Engine
+function downloadManifestFile() {
+  playGlitchSound();
+  let logText = `PINOYUNKNOWN EXPORT LOG MANIFEST\n===============================\n`;
+  logText += `TIMESTAMP: ${new Date().toISOString()}\n`;
+  logText += `CLIENT REFS:\n`;
+  logText += ` - IP Pointer: ${document.getElementById('user-ip').innerText}\n`;
+  logText += ` - Location: ${document.getElementById('user-geo').innerText}\n`;
+  logText += ` - OS / Platform: ${document.getElementById('user-os').innerText}\n\n`;
+  logText += `TERMINAL DUMP:\n`;
+  
+  consoleBox.querySelectorAll('p').forEach(p => {
+    logText += `${p.innerText}\n`;
+  });
+  
+  const blob = new Blob([logText], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'system_audit_log.txt';
+  link.click();
+}
+
+// Decoder Utilities Manager
+function processCipher(type) {
+  const input = document.getElementById('toolInput').value;
+  const output = document.getElementById('toolOutput');
+  
+  if (!input) { 
+    playBeep(140, 0.2); 
+    output.value = "ERROR: INPUT PAYLOAD EMPTY"; 
+    return; 
+  }
+  
+  playGlitchSound();
+  try {
+    if (type === 'base64-enc') output.value = btoa(input);
+    else if (type === 'base64-dec') output.value = atob(input);
+    else if (type === 'md5') output.value = md5(input);
+    else if (type === 'hex-enc') output.value = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    else if (type === 'url-enc') output.value = encodeURIComponent(input);
+    else if (type === 'url-dec') output.value = decodeURIComponent(input);
+    
+    appendTerminalLine(`[CIPHER] Action executed successfully: ${type.toUpperCase()}`, 'var(--neon-cyan)');
+  } catch (e) {
+    playBeep(140, 0.2);
+    output.value = "ERROR: EXECUTION FAILURE / INVALID STR";
+  }
+}
+
+setTimeout(() => { document.getElementById('bar1').style.width = "94%"; }, 500);
+setTimeout(() => { document.getElementById('bar2').style.width = "100%"; }, 900);
+setTimeout(() => { document.getElementById('bar3').style.width = "87%"; }, 1300);
+      </script>
