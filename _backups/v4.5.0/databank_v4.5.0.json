@@ -1,0 +1,29 @@
+[
+  {
+    "id": "mem_001",
+    "title": "Ghost-Firmware v3.2 Protocol Architecture",
+    "category": "Embedded Systems",
+    "keywords": ["ghost-firmware", "ghost", "firmware", "cardputer", "m5stack", "esp32"],
+    "priority": "Critical",
+    "content": "### 👾 GHOST-FIRMWARE CORE PROTOCOL // DATA BANK ENTRY #001\n\n**Classification:** Proprietary Embedded Configuration\n**Target Architecture:** M5Stack Cardputer (ESP32-S3 Dual-Core Xtensa LX7)\n\n#### Operational Subsystems:\n1. **Dynamic Visualizer Engine:** Renders high-frame-rate cybernetic matrix animations and spectrum bars on the integrated ST7789v2 1.14\" IPS display.\n2. **Hardware Radio Interface:** Interfaces with 2.4GHz Wi-Fi (802.11 b/g/n) and Bluetooth 5.0 LE for packet beacon monitoring, channel hopping, and deauthentication frame detection.\n3. **Keyboard Matrix Driver:** Directly samples the 56-key keyboard matrix with low-latency debouncing algorithms.\n4. **Security Hardening:** Enforces encrypted SPI flash storage (`esp_flash_encrypt`) and burns eFuses to prevent unauthorized firmware dumping via UART download mode.\n\n*Developer Note: Preserved for authenticated PinoyUnknown firmware rollouts.*",
+    "timestamp": "2026-10-07T05:25:00Z"
+  },
+  {
+    "id": "mem_002",
+    "title": "iptables + Anonsurf Linux Network Defense Matrix",
+    "category": "Network Defense",
+    "keywords": ["iptables", "anonsurf", "firewall", "tor", "killswitch", "dns leak", "ip leak"],
+    "priority": "High",
+    "content": "### 🛡️ ANONSURF & IPTABLES KILL-SWITCH PROTOCOL // DATA BANK ENTRY #002\n\n**Classification:** Linux Kernel Netfilter Defensive Layer\n\n#### Operational Mechanics:\n- **Full Network Redirection:** All outbound TCP connections are intercepted and routed through Tor TransPort (`127.0.0.1:9040`).\n- **DNS Poisoning & Leak Elimination:** Bypasses local ISP nameservers by redirecting UDP/TCP port 53 directly to Tor DNSPort (`127.0.0.1:5353`).\n- **Emergency Killswitch:** If the Tor service terminates unexpectedly, the Netfilter filter table executes an atomic `DROP` on all non-loopback traffic, preventing plaintext IP disclosure.\n\n```bash\n# Core Netfilter Redirection Hook\nsudo iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 5353\nsudo iptables -t nat -A OUTPUT -p tcp --syn -j REDIRECT --to-ports 9040\n```\n\n*Developer Note: Tested on Debian/Ubuntu/Arch Linux environments.*",
+    "timestamp": "2026-10-07T05:25:00Z"
+  },
+  {
+    "id": "mem_003",
+    "title": "PinoyUnknown Ecosystem & Core Portfolio Master Registry",
+    "category": "Developer Dossier",
+    "keywords": ["pinoyunknown", "creator", "architect", "projects", "apps", "who made this", "portfolio"],
+    "priority": "Critical",
+    "content": "### ⚡ PINOYUNKNOWN MASTER DEVELOPER DOSSIER // DATA BANK ENTRY #003\n\n**Architect:** PinoyUnknown // Apps & Core Security Developer\n**Specialization:** Defensive application engineering, embedded firmware configurations, and autonomous client-side neural software.\n\n#### Production Repositories:\n- `pinoyunknown.github.io`: Flagship cybernetic security dashboard featuring unmasked GPU telemetry, 26-tool cryptographic engine, in-repo offline AI, and protected Data Bank.\n- `Ghost-Firmware`: Customized firmware suites and animation engines for ESP32/Cardputer devices.\n- `iptables+anonsurf+firewall`: Kernel-level network anonymity and packet containment automation in Python/Bash.\n- `create-automation-email-for-app-testing`: Multi-platform automated testing suites for enterprise stress-testing.\n\n*Core Principle: Standalone sovereignty, zero external data leakage, and air-gapped readiness.*",
+    "timestamp": "2026-10-07T05:25:00Z"
+  }
+]
